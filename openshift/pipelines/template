@@ -1,0 +1,122 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: template-custom-pipeline
+message: |-
+  A Jenkins server must be instantiated in this project to manage
+  the Pipeline BuildConfig created by this template.  You will be able to log in to
+  it using your OpenShift user credentials.
+metadata:
+  annotations:
+    description: This is a custom template to work with Jenkins Pipeline.
+    iconClass: icon-jenkins
+    openshift.io/display-name: Custom Pipeline Build
+    tags: quickstart,instant-app,jenkins
+  creationTimestamp: 2019-10-16T22:12:15Z
+  name: custom-pipeline
+  namespace: openshift
+  resourceVersion: "4059305"
+  selfLink: /apis/template.openshift.io/v1/namespaces/openshift/templates/custom-pipeline
+  uid: 0299f746-f062-11e9-a35a-0050569a0307
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "${NAME}", "namespace": "", "kind":
+        "DeploymentConfig"}]'
+    labels:
+      name: ${NAME}
+    name: ${NAME}
+  spec:
+    source:
+      git:
+        ref: ${SOURCE_REPOSITORY_REF}
+        uri: ${SOURCE_REPOSITORY_URL}
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: ${JENKINSFILE_PATH}
+      type: JenkinsPipeline
+    triggers:
+    - github:
+        secret: secret
+      type: GitHub
+    - generic:
+        secret: secret
+      type: Generic
+    - bitbucket:
+        secret: secret
+      type: Bitbucket
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      service.alpha.openshift.io/dependencies: '[{"name": "${NAME}",
+        "namespace": "", "kind": "Service"}]'
+    name: ${NAME}
+  spec:
+    ports:
+    - name: ${NAME}
+      port: ${SERVICE_PORT}
+      targetPort: ${SERVICE_PORT}
+    selector:
+      name: ${NAME}
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ${NAME}
+  spec:
+    host: ${APPLICATION_DOMAIN}
+    to:
+      kind: Service
+      name: ${NAME}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      description: Keeps track of changes in the application image
+    name: ${NAME}
+parameters:
+- description: The name assigned to all of the frontend objects defined in this template.
+  displayName: Name
+  name: NAME
+  required: true
+  value: custom-app
+- description: The exposed hostname that will route to the Node.js service, if left
+    blank a value will be defaulted.
+  displayName: Application Hostname
+  name: APPLICATION_DOMAIN
+- description: The URL of the repository with your application source code.
+  displayName: Git Repository URL
+  name: SOURCE_REPOSITORY_URL
+  required: true
+  value: https://github.com/openshift/nodejs-ex.git
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: SOURCE_REPOSITORY_REF
+- description: Set this to the relative path to your project if it is not in the root
+    of your repository.
+  displayName: Context Directory
+  name: CONTEXT_DIR
+- description: Github trigger secret.  A difficult to guess string encoded as part
+    of the webhook URL.  Not encrypted.
+  displayName: GitHub Webhook Secret
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  name: GITHUB_WEBHOOK_SECRET
+- description: A secret string used to configure the Generic webhook.
+  displayName: Generic Webhook Secret
+  from: '[a-zA-Z0-9]{40}'
+  generate: expression
+  name: GENERIC_WEBHOOK_SECRET
+- description: The Jenkinsfile Path.
+  displayName: JenkinsFile Path
+  name: JENKINSFILE_PATH
+  required: true
+  value: /path/to/jenkinsFile
+- description: The service port number.
+  displayName: Port
+  name: SERVICE_PORT
+  required: true
+  value: "8081"
