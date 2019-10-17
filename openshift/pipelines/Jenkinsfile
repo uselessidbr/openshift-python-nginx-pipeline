@@ -7,7 +7,7 @@ pipeline {
         GIT_REPO = "${SOURCE_REPOSITORY_URL}"
         GIT_BRANCH = "${SOURCE_REPOSITORY_REF}"
         STAGE_TAG = "promoteToQA"
-        DEV_PROJECT = env.PROJECT_NAME
+        DEV_PROJECT = pipeline-test
         TEMPLATE_NAME = "${NAME}"
         ARTIFACT_FOLDER = "target"
         PORT = "${SERVICE_PORT}";
