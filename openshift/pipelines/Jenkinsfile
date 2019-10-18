@@ -2,7 +2,7 @@ pipeline {
     agent {
         node {label 'python'}
     }
-    environment {
+    script {
         env.GIT_REPO = env.SOURCE_REPOSITORY_URL
         env.GIT_BRANCH = env.SOURCE_REPOSITORY_REF
         def APPLICATION_NAME="${NAME}"
