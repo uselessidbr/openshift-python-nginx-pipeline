@@ -2,17 +2,17 @@ pipeline {
     agent {
         node {label 'python'}
     }
-    stages {
-        stage('Init') {
-            DEV_PROJECT = env.PROJECT_NAME
-            GIT_REPO = env.SOURCE_REPOSITORY_URL
-            GIT_BRANCH = env.SOURCE_REPOSITORY_REF
-            APPLICATION_NAME = env.NAME
-            STAGE_TAG="promoteToQA"
-            TEMPLATE_NAME = env.NAME
-            ARTIFACT_FOLDER="target"
-            PORT = env.SERVICE_PORT;
-        }
+    environment {
+        APPLICATION_NAME = 'custom-pipeline'
+        GIT_REPO="https://github.com/uselessidbr/openshift-python-nginx-pipeline.git"
+        GIT_BRANCH="master"
+        STAGE_TAG = "promoteToQA"
+        DEV_PROJECT = "pipeline-test"
+        STAGE_PROJECT = "stage"
+        TEMPLATE_NAME = "custom-pipeline"
+        ARTIFACT_FOLDER = "target"
+        PORT = 8081;
+    }
         stage('Get Latest Code') {
             steps {
                 git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
