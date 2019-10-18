@@ -12,7 +12,7 @@ pipeline {
         ARTIFACT_FOLDER = "target"
         def PORT="${SERVICE_PORT}";
     }
-    stages {'(Debug pipeline)'} {
+    stages {('Debug pipeline')} {
         steps {
             sh """
             echo "${DEV_PROJECT}"
