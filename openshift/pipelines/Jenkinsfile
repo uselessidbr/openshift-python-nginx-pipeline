@@ -3,14 +3,14 @@ pipeline {
         node {label 'python'}
     }
     environment {
-        APPLICATION_NAME = "${NAME}"
-        GIT_REPO = "${SOURCE_REPOSITORY_URL}"
-        GIT_BRANCH = "${SOURCE_REPOSITORY_REF}"
+        APPLICATION_NAME = "custom-pipeline"
+        GIT_REPO = "https://github.com/uselessidbr/openshift-python-nginx-pipeline.git"
+        GIT_BRANCH = "master"
         STAGE_TAG = "promoteToQA"
         DEV_PROJECT = "pipeline-test"
-        TEMPLATE_NAME = "${NAME}"
+        TEMPLATE_NAME = "custom-pipeline"
         ARTIFACT_FOLDER = "target"
-        PORT = "${SERVICE_PORT}";
+        PORT = "8081";
     }
     stages {
         stage('Get Latest Code') {
