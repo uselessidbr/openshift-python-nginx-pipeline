@@ -7,18 +7,10 @@ pipeline {
         def GIT_REPO="${SOURCE_REPOSITORY_URL}"
         def GIT_BRANCH="${SOURCE_REPOSITORY_REF}"
         def DEV_PROJECT="env.PROJECT_NAME"
-        def STAGE_TAG = "promoteToQA"
-        def TEMPLATE_NAME = "${NAME}"
-        ARTIFACT_FOLDER = "target"
+        def STAGE_TAG="promoteToQA"
+        def TEMPLATE_NAME="${NAME}"
+        ARTIFACT_FOLDER="target"
         def PORT="${SERVICE_PORT}";
-    }
-    stages {('Debug pipeline')} {
-        steps {
-            sh """
-            echo "${DEV_PROJECT}"
-            echo "${GIT_REPO}"
-            """
-        }
     }
     stages {
         stage('Get Latest Code') {
