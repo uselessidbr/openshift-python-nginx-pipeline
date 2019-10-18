@@ -3,12 +3,12 @@ pipeline {
         node {label 'python'}
     }
     environment {
-        APPLICATION_NAME = "custom-pipeline"
+        APPLICATION_NAME = "custom-app"
         GIT_REPO = "https://github.com/uselessidbr/openshift-python-nginx-pipeline.git"
         GIT_BRANCH = "master"
         STAGE_TAG = "promoteToQA"
         DEV_PROJECT = "pipeline-test"
-        TEMPLATE_NAME = "custom-pipeline"
+        TEMPLATE_NAME = "custom-app"
         ARTIFACT_FOLDER = "target"
         PORT = "8081";
     }
