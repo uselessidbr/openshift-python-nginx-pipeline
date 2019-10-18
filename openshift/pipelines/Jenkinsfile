@@ -6,7 +6,7 @@ pipeline {
         def APPLICATION_NAME="${NAME}"
         def GIT_REPO="${SOURCE_REPOSITORY_URL}"
         def GIT_BRANCH="${SOURCE_REPOSITORY_REF}"
-        def DEV_PROJECT=env.PROJECT_NAME
+        def DEV_PROJECT="env.PROJECT_NAME"
         def STAGE_TAG = "promoteToQA"
         def TEMPLATE_NAME = "${NAME}"
         ARTIFACT_FOLDER = "target"
