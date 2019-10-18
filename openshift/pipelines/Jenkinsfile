@@ -2,17 +2,17 @@ pipeline {
     agent {
         node {label 'python'}
     }
-    environment {
-        env.GIT_REPO = env.SOURCE_REPOSITORY_URL
-        env.GIT_BRANCH = env.SOURCE_REPOSITORY_REF
-        def APPLICATION_NAME="${NAME}"
-        def DEV_PROJECT="env.PROJECT_NAME"
-        def STAGE_TAG="promoteToQA"
-        def TEMPLATE_NAME="${NAME}"
-        ARTIFACT_FOLDER="target"
-        def PORT="${SERVICE_PORT}";
-    }
     stages {
+        stage('Init') {
+            DEV_PROJECT = env.PROJECT_NAME
+            GIT_REPO = env.SOURCE_REPOSITORY_URL
+            GIT_BRANCH = env.SOURCE_REPOSITORY_REF
+            APPLICATION_NAME = env.NAME
+            STAGE_TAG="promoteToQA"
+            TEMPLATE_NAME = env.NAME
+            ARTIFACT_FOLDER="target"
+            PORT = env.SERVICE_PORT;
+        }
         stage('Get Latest Code') {
             steps {
                 git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
